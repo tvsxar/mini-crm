@@ -1,10 +1,12 @@
+import TopBar from './components/TopBar';
+import CustomersList from './components/CustomersList';
+
 function App() {
 
   return (
     <>
-      <div>
-        <h1>Hello World</h1>
-      </div>
+      <TopBar />
+      <CustomersList />
     </>
   )
 }
