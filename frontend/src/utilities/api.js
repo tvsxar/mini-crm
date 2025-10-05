@@ -1,4 +1,4 @@
-const API_URL = process.env.VITE_API_URL || 'http://localhost:3999/customers';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3999/customers';
 
 // Function to fetch all customers
 export const getAllCustomers = async () => {
