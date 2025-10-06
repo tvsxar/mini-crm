@@ -4,7 +4,7 @@ const router = require("express").Router();
 // Get all customers
 router.get('/', async (req, res) => {
     try {
-        const allCustomers = await pool.query("SELECT * FROM customers");
+        const allCustomers = await pool.query("SELECT * FROM customers ORDER BY created_at DESC");
         res.json(allCustomers.rows);
     } catch (err) {
         console.error(err.message);

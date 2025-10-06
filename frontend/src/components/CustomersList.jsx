@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { getAllCustomers, deleteCustomer } from '../utilities/api';
 
 import Pagination from './Pagination';
@@ -6,8 +6,7 @@ import Pagination from './Pagination';
 import editIcon from '../assets/pencil-sharp.svg';
 import deleteIcon from '../assets/trash-outline.svg';
 
-function CustomersList() {
-    const [customers, setCustomers] = useState([]);
+function CustomersList({setMode, setIsModalOpen, setSelectedCustomer, customers, setCustomers}) {
 
     useEffect(() => {
         async function fetchCustomers() {
@@ -21,6 +20,12 @@ function CustomersList() {
     async function handleDeleteCustomer(id) {
         await deleteCustomer(id);
         setCustomers(customers.filter(customer => customer.customer_id !== id));
+    }
+
+    function handleEditCustomer(customer) {
+        setMode('edit');
+        setSelectedCustomer(customer);
+        setIsModalOpen(true);
     }
 
     return (
@@ -47,7 +52,8 @@ function CustomersList() {
                             <td className="px-4 py-4">{customer.position}</td>
                             <td className="px-4 py-4">
                                 <div className="flex gap-2">
-                                    <button className="p-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition cursor-pointer">
+                                    <button className="p-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition cursor-pointer"
+                                    onClick={() => handleEditCustomer(customer)}>
                                         <img src={editIcon} alt="editIcon" className="w-4 h-4" />
                                     </button>
                                     <button className="p-2 bg-red-100 hover:bg-red-200 rounded-lg transition cursor-pointer"

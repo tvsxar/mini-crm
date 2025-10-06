@@ -4,8 +4,12 @@ import searchIcon from '../assets/search-outline.svg';
 
 import SortDropdown from './SortDropdown';
 
-function TopBar() {
-    const [sortOrder, setSortOrder] = useState('desc');
+function TopBar({setMode, setIsModalOpen, sortOrder, setSortOrder}) {
+
+    function handleAddNew() {
+      setMode('add');
+      setIsModalOpen(true);
+    }
 
   return (
     <div className="bg-white rounded-2xl p-4 max-w-6xl mx-auto mt-6 mb-4 shadow-sm">
@@ -23,8 +27,9 @@ function TopBar() {
 
         <div className="flex items-center gap-4">
             <SortDropdown sortOrder={sortOrder} setSortOrder={setSortOrder} />
-            <button className="bg-gray-100 text-black text-sm font-medium px-4 py-2 rounded-xl 
-            cursor-pointer hover:bg-gray-200 shadow-sm">Add New</button>
+            <button className="bg-gray-100 text-black text-sm font-medium px-4 
+            py-2 rounded-xl cursor-pointer hover:bg-gray-200 shadow-sm"
+            onClick={() => handleAddNew()}>Add New</button>
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3999/customers
 
 // Function to fetch all customers
 export const getAllCustomers = async () => {
+
     try {
         const response = await fetch(API_URL);
         const data = await response.json();
