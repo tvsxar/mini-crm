@@ -1,10 +1,10 @@
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3999/customers';
 
 // Function to fetch all customers
-export const getAllCustomers = async (sortOrder, currentPage) => {
+export const getAllCustomers = async (sortOrder, currentPage, searchQuery) => {
 
     try {
-        const response = await fetch(`${API_URL}?sort=${sortOrder}&page=${currentPage}`);
+        const response = await fetch(`${API_URL}?sort=${sortOrder}&page=${currentPage}&search=${searchQuery || ''}`);
         const data = await response.json();
         return data;
     } catch (err) {

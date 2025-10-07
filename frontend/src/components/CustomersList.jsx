@@ -9,18 +9,18 @@ import deleteIcon from '../assets/trash-outline.svg';
 
 function CustomersList() {
     const {modalState, setModalState, customers, setCustomers, sortOrder, currentPage, 
-    setCurrentPage, setTotalPages, setTotalCustomers, totalCustomers} = useContext(CustomersContext);
+    setCurrentPage, setTotalPages, setTotalCustomers, totalCustomers, searchQuery} = useContext(CustomersContext);
 
     useEffect(() => {
         async function fetchCustomers() {
-            const data = await getAllCustomers(sortOrder, currentPage);
+            const data = await getAllCustomers(sortOrder, currentPage, searchQuery);
             setCustomers(data.customers);
             setTotalPages(data.totalPages);
             setTotalCustomers(data.totalCustomers);
         }
 
         fetchCustomers();
-    }, [sortOrder, currentPage]);
+    }, [sortOrder, currentPage, searchQuery]);
 
     async function handleDeleteCustomer(id) {
         await deleteCustomer(id);
@@ -76,9 +76,9 @@ function CustomersList() {
             </table>
 
             <div className="px-4 py-6 flex items-center justify-between">
-                <p className='text-gray-400 font-normal'>{`Showing data 1 to 8 of ${totalCustomers ? (totalCustomers > 999 ? `${totalCustomers/1000}K` : totalCustomers) : 0} entries`}</p>
+                <p className='text-gray-400 font-normal'>{`Total customers: ${totalCustomers ? (totalCustomers > 999 ? `${totalCustomers/1000}K` : totalCustomers) : 0}`}</p>
 
-                <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                <Pagination />
             </div>
         </div>
     )

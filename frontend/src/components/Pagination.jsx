@@ -1,15 +1,22 @@
+import { useContext } from 'react';
+import CustomersContext from '../context/CustomersContext';
+
 import arrowLeft from '../assets/chevron-back-outline.svg';
 import arrowRight from '../assets/chevron-forward-outline.svg';
 
-function Pagination({currentPage, setCurrentPage}) {
+function Pagination() {
+    const { currentPage, setCurrentPage, totalPages } = useContext(CustomersContext);
+
     function goToPreviousPage() {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
     }
 
     function goToNextPage() {
-        setCurrentPage(currentPage + 1);
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    }
+
+    function handlePageClick(page) {
+        setCurrentPage(page);
     }
 
     return (
@@ -20,15 +27,13 @@ function Pagination({currentPage, setCurrentPage}) {
                 </button>
       
                 <div className="flex gap-1">
-                    <button className="w-7 h-7 rounded-lg flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-600 cursor-pointer">
-                        1
-                    </button>
-                    <button className="w-7 h-7 rounded-lg flex items-center justify-center bg-black text-white font-medium shadow-sm cursor-pointer">
-                        2
-                    </button>
-                    <button className="w-7 h-7 rounded-lg flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-600 cursor-pointer">
-                        3
-                    </button> 
+                    {
+                        [...Array(totalPages).keys()].map(i => (
+                            <button onClick={() => handlePageClick(i+1)} key={i} className={`w-7 h-7 rounded-lg flex items-center justify-center ${currentPage === i + 1 ? 'bg-black text-white font-medium shadow-sm' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'} cursor-pointer`}>
+                                {i + 1}
+                            </button>
+                        ))
+                    }
                 </div>
 
                 <button onClick={() => goToNextPage()} className="px-1.5 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 transition cursor-pointer">

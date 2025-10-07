@@ -8,6 +8,7 @@ function CustomersProvider({children}) {
   const [totalPages, setTotalPages] = useState(1);
   const [sortOrder, setSortOrder] = useState('desc');
   const [totalCustomers, setTotalCustomers] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
   const [modalState, setModalState] = useState({
     isOpen: false,
     mode: 'add',
@@ -21,6 +22,7 @@ function CustomersProvider({children}) {
       totalPages, setTotalPages,
       sortOrder, setSortOrder,
       totalCustomers, setTotalCustomers,
+      searchQuery, setSearchQuery,
       modalState, setModalState
     }}>
       {children}
