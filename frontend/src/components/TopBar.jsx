@@ -1,14 +1,20 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 
 import searchIcon from '../assets/search-outline.svg';
 
+// Components
 import SortDropdown from './SortDropdown';
+import CustomersContext from '../context/CustomersContext';
 
-function TopBar({setMode, setIsModalOpen, sortOrder, setSortOrder}) {
+function TopBar() {
+  const { modalState, setModalState, sortOrder, setSortOrder } = useContext(CustomersContext);
 
     function handleAddNew() {
-      setMode('add');
-      setIsModalOpen(true);
+      setModalState({
+        ...modalState,
+        isOpen: true,
+        mode: 'add'
+      });
     }
 
   return (

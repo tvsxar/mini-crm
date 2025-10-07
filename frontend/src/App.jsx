@@ -3,38 +3,23 @@ import TopBar from './components/TopBar';
 import CustomersList from './components/CustomersList';
 import CustomerModal from './components/CustomerModal';
 
-// React
-import { useState } from 'react';
+// React + Context
+import { CustomersProvider } from './context/CustomersContext';
 
 function App() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [mode, setMode] = useState('add'); // 'add' or 'edit'
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const [customers, setCustomers] = useState([]);
-  const [sortOrder, setSortOrder] = useState('desc');
 
   return (
-    <>
-      <TopBar 
-        setMode={setMode} 
-        setIsModalOpen={setIsModalOpen}
-        sortOrder={sortOrder}
-        setSortOrder={setSortOrder} />
-      <CustomersList 
-        setMode={setMode} 
-        setIsModalOpen={setIsModalOpen}
-        setSelectedCustomer={setSelectedCustomer}
-        customers={customers}
-        setCustomers={setCustomers} />
+    <CustomersProvider>
+      {/* Top bar with search, sort, and add new customer button */}
+      <TopBar  />
+
+      {/* List of customers with pagination */}
+      <CustomersList />
+
       {/* Modal for adding/editing customers */}
-      <CustomerModal 
-        mode={mode}
-        isModalOpen={isModalOpen} 
-        setIsModalOpen={setIsModalOpen}
-        selectedCustomer={selectedCustomer}
-        setCustomers={setCustomers} />
-    </>
+      <CustomerModal />
+    </CustomersProvider>
   )
 }
 
-export default App
+export default App;

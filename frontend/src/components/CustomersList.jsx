@@ -1,21 +1,26 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { getAllCustomers, deleteCustomer } from '../utilities/api';
+import CustomersContext from '../context/CustomersContext';
 
 import Pagination from './Pagination';
 
 import editIcon from '../assets/pencil-sharp.svg';
 import deleteIcon from '../assets/trash-outline.svg';
 
-function CustomersList({setMode, setIsModalOpen, setSelectedCustomer, customers, setCustomers}) {
+function CustomersList() {
+    const {modalState, setModalState, customers, setCustomers, sortOrder, currentPage, 
+    setCurrentPage, setTotalPages, setTotalCustomers, totalCustomers} = useContext(CustomersContext);
 
     useEffect(() => {
         async function fetchCustomers() {
-            const data = await getAllCustomers();
-            setCustomers(data);
+            const data = await getAllCustomers(sortOrder, currentPage);
+            setCustomers(data.customers);
+            setTotalPages(data.totalPages);
+            setTotalCustomers(data.totalCustomers);
         }
 
         fetchCustomers();
-    }, []);
+    }, [sortOrder, currentPage]);
 
     async function handleDeleteCustomer(id) {
         await deleteCustomer(id);
@@ -23,9 +28,12 @@ function CustomersList({setMode, setIsModalOpen, setSelectedCustomer, customers,
     }
 
     function handleEditCustomer(customer) {
-        setMode('edit');
-        setSelectedCustomer(customer);
-        setIsModalOpen(true);
+        setModalState({
+        ...modalState,
+        isOpen: true,
+        mode: 'add',
+        selectedCustomer: customer
+      });
     }
 
     return (
@@ -68,9 +76,9 @@ function CustomersList({setMode, setIsModalOpen, setSelectedCustomer, customers,
             </table>
 
             <div className="px-4 py-6 flex items-center justify-between">
-                <p className='text-gray-400 font-normal'>{`Showing data 1 to 8 of  300K entries`}</p>
+                <p className='text-gray-400 font-normal'>{`Showing data 1 to 8 of ${totalCustomers ? (totalCustomers > 999 ? `${totalCustomers/1000}K` : totalCustomers) : 0} entries`}</p>
 
-                <Pagination />
+                <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
             </div>
         </div>
     )

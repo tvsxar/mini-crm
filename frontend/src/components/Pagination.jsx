@@ -1,11 +1,21 @@
 import arrowLeft from '../assets/chevron-back-outline.svg';
 import arrowRight from '../assets/chevron-forward-outline.svg';
 
-function Pagination() {
+function Pagination({currentPage, setCurrentPage}) {
+    function goToPreviousPage() {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    }
+
+    function goToNextPage() {
+        setCurrentPage(currentPage + 1);
+    }
+
     return (
         <div className="flex items-center justify-between text-xs text-gray-500">
             <div className="flex items-center gap-2">
-                <button className="px-1.5 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 transition cursor-pointer">
+                <button onClick={() => goToPreviousPage()} className="px-1.5 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 transition cursor-pointer">
                   <img src={arrowLeft} alt="left" className='w-4 h-4' />
                 </button>
       
@@ -21,7 +31,7 @@ function Pagination() {
                     </button> 
                 </div>
 
-                <button className="px-1.5 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 transition cursor-pointer">
+                <button onClick={() => goToNextPage()} className="px-1.5 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 transition cursor-pointer">
                     <img src={arrowRight} alt="left" className='w-4 h-4' />
                 </button>
             </div>

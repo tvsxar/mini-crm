@@ -1,9 +1,14 @@
 import { addNewCustomer, updateCustomer } from '../utilities/api';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
 import closeIcon from '../assets/close-outline.svg';
 
-function CustomerModal({mode, isModalOpen, setIsModalOpen, selectedCustomer, setCustomers}) {
+import CustomersContext from '../context/CustomersContext';
+
+function CustomerModal() {
+    const {modalState, setModalState, setCustomers} = useContext(CustomersContext);
+    const { isOpen: isModalOpen, mode, selectedCustomer } = modalState;
+
     if (!isModalOpen) return null;
 
     // State for form fields
@@ -14,7 +19,11 @@ function CustomerModal({mode, isModalOpen, setIsModalOpen, selectedCustomer, set
     const [position, setPosition] = useState(mode === 'edit' ? selectedCustomer.position : '');
 
     function closeModal() {
-        setIsModalOpen(false);
+        setModalState({
+            ...modalState,
+            isOpen: false,
+            selectedCustomer: null
+        });
     }
 
     async function handleSubmit(e) {

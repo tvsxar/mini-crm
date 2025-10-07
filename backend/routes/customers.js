@@ -4,8 +4,50 @@ const router = require("express").Router();
 // Get all customers
 router.get('/', async (req, res) => {
     try {
-        const allCustomers = await pool.query("SELECT * FROM customers ORDER BY created_at DESC");
-        res.json(allCustomers.rows);
+        const { sort = 'desc', page = 1, search = '' } = req.query;
+        const limit = 8;
+        const sortOrder = sort && sort.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
+
+        let allCustomers, totalCustomers;
+
+        if (search) {
+            const searchQuery = `%${search}%`;
+            allCustomers = await pool.query(`
+                SELECT * FROM customers
+                WHERE first_name ILIKE $1 
+                  OR last_name ILIKE $1 
+                  OR email ILIKE $1 
+                  OR company ILIKE $1 
+                  OR position ILIKE $1
+                ORDER BY created_at ${sortOrder} 
+                LIMIT $2 OFFSET $3`,
+                [searchQuery, limit, (page - 1) * limit]);
+
+            totalCustomers = await pool.query(`
+                SELECT COUNT(*) FROM customers
+                WHERE first_name ILIKE $1 
+                  OR last_name ILIKE $1 
+                  OR email ILIKE $1 
+                  OR company ILIKE $1 
+                  OR position ILIKE $1`,
+                [searchQuery]);
+        } else {
+            allCustomers = await pool.query(`
+                SELECT * FROM customers 
+                ORDER BY created_at ${sortOrder} 
+                LIMIT $1 OFFSET $2`, 
+                [limit, (page -1) * limit]);
+
+            totalCustomers = await pool.query(" SELECT COUNT(*) FROM customers");
+        }
+
+        const total = parseInt(totalCustomers.rows[0].count, 10);
+
+        res.json({
+            customers: allCustomers.rows,
+            totalPages: Math.ceil(total / limit),
+            totalCustomers: total,
+        });
     } catch (err) {
         console.error(err.message);
         res.status(500).send("Server Error");
