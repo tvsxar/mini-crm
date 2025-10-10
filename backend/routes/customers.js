@@ -50,7 +50,7 @@ router.get('/', async (req, res) => {
         });
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server Error");
+        res.status(500).json({ error: "Server Error" })
     }
 });
 
@@ -66,7 +66,7 @@ router.post('/', async (req, res) => {
             res.json(response.rows[0]);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server Error");
+        res.status(500).json({ error: "Server Error" })
     }
 });
 
@@ -83,7 +83,7 @@ router.put('/:id', async (req, res) => {
             res.json(response.rows[0]);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server Error");
+        res.status(500).json({ error: "Server Error" })
     }
 })
 
@@ -95,7 +95,7 @@ router.delete('/:id', async (req, res) => {
         res.json("Customer deleted successfully");
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server Error");
+        res.status(500).json({ error: "Server Error" })
     }
 })
 
