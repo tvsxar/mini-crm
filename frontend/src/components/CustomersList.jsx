@@ -31,7 +31,7 @@ function CustomersList() {
         setModalState({
         ...modalState,
         isOpen: true,
-        mode: 'add',
+        mode: 'edit',
         selectedCustomer: customer
       });
     }
