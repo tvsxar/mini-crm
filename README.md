@@ -100,6 +100,12 @@ CLIENT_URL=http://localhost:5173
 npm run dev
 ```
 
+> **Note for developers:**  
+> For local development, uncomment the local pool configuration in `/db.js` and comment out the production one.  
+> Make sure to fill in your own local database credentials.
+
+---
+
 ### Frontend
 
 ```bash
